@@ -11,6 +11,7 @@
     "axios": "^0.21.1",
     "connected-react-router": "^6.9.1",
     "history": "4.10.1",
+    "husky": "^7.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.4",
@@ -32,6 +33,12 @@
     "lint:css": "yarn run stylelint './src/**/*.js'",
     "eject": "react-scripts eject"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint && yarn lint:css",
+      "pre-push": "yarn lint && && yarn lint:css && yarn test"
+    }
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -50,18 +57,11 @@
       "last 1 safari version"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint && yarn lint:css",
-      "pre-push": "yarn lint && && yarn lint:css && yarn test"
-    }
-  },
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-react-app": "^6.0.0",
     "eslint-plugin-prettier": "^3.4.1",
-    "husky": "^7.0.2",
     "prettier": "^2.3.2",
     "redux-logger": "^3.0.6",
     "stylelint": "^13.13.1"
