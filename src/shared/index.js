@@ -1,0 +1,1 @@
+export { GlobalFonts } from "./default";
