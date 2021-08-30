@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 import { SearchBar } from "../SearchBar";
 
 // Hooks
-import { useAuthors } from "../../hooks";
+import { useAuthors, useBooks } from "../../hooks";
 
 // Routes
 import { routes } from "../../routes";
@@ -20,12 +20,13 @@ import { Controls } from "./Controls";
 const { Column } = Table;
 
 export const AuthorsList = () => {
-  const { authors, isFetching, onAuthorDelete } = useAuthors();
+  const { authors, isFetching, onAuthorDelete, onAuthorSearch } = useAuthors();
+  const { findBooksAuthorBased, onSearchPatternChange } = useBooks();
 
   return (
     <Col xs={24} lg={20}>
       <Wrapper>
-        <SearchBar />
+        <SearchBar onSearch={onAuthorSearch} onChange={onSearchPatternChange} />
         <Controls>
           <Button type="primary">Add Author</Button>
         </Controls>
@@ -58,19 +59,19 @@ export const AuthorsList = () => {
           <Column
             title="Action"
             key="action"
-            render={(text, record) => (
+            render={(record) => (
               <Space size="middle">
                 <Button type="secondary">
                   <EditOutlined />
                 </Button>
-                <Button
-                  type="secondary"
-                  onClick={() => onAuthorDelete(record.key)}
-                >
+                <Button type="secondary" onClick={() => onAuthorDelete(record)}>
                   <DeleteOutlined />
                 </Button>
-                <NavLink to={`${routes.viewAuthor}/${record.key}`}>
-                  <Button type="primary">
+                <NavLink to={`${routes.authoredBooks}/${record.key}`}>
+                  <Button
+                    type="primary"
+                    onClick={() => findBooksAuthorBased(record)}
+                  >
                     <RightOutlined />
                   </Button>
                 </NavLink>

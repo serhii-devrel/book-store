@@ -13,7 +13,9 @@ import { routes } from "../../routes";
 
 const SideBar = () => {
   const { pathname } = useLocation();
-
+  const path = `/${pathname
+    .split("/")
+    .reduce((a, b) => (a.length > b.length ? a : b), 0)}`;
   return (
     <Col xs={24} lg={4}>
       <NavLink to={routes.authors}>
@@ -32,7 +34,7 @@ const SideBar = () => {
         </LogoWrapper>
       </NavLink>
       <NavWrapper>
-        <Menu selectedKeys={[pathname]} theme="dark">
+        <Menu selectedKeys={[path]} theme="dark">
           <Menu.Item key={routes.authors}>
             <NavLink to={routes.authors}>
               <TypographyMenuItem>Authors</TypographyMenuItem>

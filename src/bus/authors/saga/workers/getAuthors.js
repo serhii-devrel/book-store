@@ -4,6 +4,7 @@ import { apply, put } from "redux-saga/effects";
 // Actions
 import { authorsActions } from "../../actions";
 import { uiActions } from "../../../ui/actions";
+import { booksActions } from "../../../books/actions";
 
 // REST
 import { RESTService } from "../../../../REST/service";
@@ -11,6 +12,7 @@ import { RESTService } from "../../../../REST/service";
 export function* getAuthors() {
   try {
     yield put(uiActions.startFetching());
+    yield put(booksActions.clearSearchPattern());
     const response = yield apply(RESTService, RESTService.authors.getAuthors);
     const { status, statusText, data: authors } = response;
 

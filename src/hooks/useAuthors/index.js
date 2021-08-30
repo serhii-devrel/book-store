@@ -7,7 +7,7 @@ import { authorsActions } from "../../bus/authors/actions";
 
 export const useAuthors = () => {
   const dispatch = useDispatch();
-  const authors = useSelector((state) => state.authors);
+  const { authors } = useSelector((state) => state.authors);
   const { isFetching } = useSelector((state) => state.ui);
   const authorsBasedOnKey = authors.map(({ id, ...records }) => ({
     ...records,
@@ -18,9 +18,17 @@ export const useAuthors = () => {
     dispatch(authorsActions.getAuthorsAsync());
   }, [dispatch]);
 
+  const onAuthorSearch = useCallback(
+    (pattern) => {
+      dispatch(authorsActions.searchAuthorAsync(pattern));
+    },
+    [dispatch]
+  );
+
   const onAuthorDelete = useCallback(
-    (id) => {
-      dispatch(authorsActions.deleteAuthorAsync(Number(id)));
+    (record) => {
+      const { key: id } = record;
+      dispatch(authorsActions.deleteAuthorAsync(id));
     },
     [dispatch]
   );
@@ -29,5 +37,6 @@ export const useAuthors = () => {
     authors: authorsBasedOnKey,
     isFetching,
     onAuthorDelete,
+    onAuthorSearch,
   };
 };

@@ -1,9 +1,9 @@
 export const routes = Object.freeze({
   authors: "/authors",
   books: "/books",
-  deleteAuthor: "authors/delete",
-  editAuthor: "authors/edit",
-  viewAuthor: "authors/view",
+  authoredBooks: "/books",
 });
 
-export const dynamicRoutes = Object.freeze({});
+export const dynamicRoutes = Object.freeze({
+  authoredBooks: "/books/:id",
+});

@@ -33,5 +33,27 @@ export const RESTService = {
       });
     },
   },
-  books: {},
+  books: {
+    getBooks() {
+      return RESTClient.get("/authors/", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
+    findBooksAuthorBased(id) {
+      return RESTClient.get(`/authors/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
+    searchBooks(pattern) {
+      return RESTClient.get(`/authors?search=${pattern}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
+  },
 };

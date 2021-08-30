@@ -1,24 +1,23 @@
 // Core
 import React from "react";
 
-// Hooks
-import { useSearch } from "../../hooks";
-
 // Style
 import { Wrapper } from "./Wrapper";
 import { Input, Col } from "antd";
 
 const { Search } = Input;
 
-export const SearchBar = () => {
-  const { onAuthorSearch } = useSearch();
+export const SearchBar = (props) => {
+  const { onSearch, value, onChange } = props;
 
   return (
     <Col xs={24}>
       <Wrapper>
         <Search
           placeholder="Enter search text..."
-          onSearch={onAuthorSearch}
+          onSearch={onSearch}
+          onChange={onChange}
+          value={value}
           allowClear
           enterButton
           size="large"
