@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 
 // Components
 import { SearchBar } from "../SearchBar";
+import { AuthorForm } from "../AuthorForm";
 
 // Hooks
 import { useAuthors, useBooks } from "../../hooks";
@@ -13,7 +14,7 @@ import { routes } from "../../routes";
 
 // Style
 import { Col, Table, Button, Space } from "antd";
-import { EditOutlined, DeleteOutlined, RightOutlined } from "@ant-design/icons";
+import { DeleteOutlined, RightOutlined } from "@ant-design/icons";
 import { Wrapper } from "./Wrapper";
 import { Controls } from "./Controls";
 
@@ -28,7 +29,7 @@ export const AuthorsList = () => {
       <Wrapper>
         <SearchBar onSearch={onAuthorSearch} onChange={onSearchPatternChange} />
         <Controls>
-          <Button type="primary">Add Author</Button>
+          <AuthorForm />
         </Controls>
         <Table loading={isFetching} dataSource={authors} pagination={false}>
           <Column
@@ -61,9 +62,7 @@ export const AuthorsList = () => {
             key="action"
             render={(record) => (
               <Space size="middle">
-                <Button type="secondary">
-                  <EditOutlined />
-                </Button>
+                <AuthorForm isEditMode />
                 <Button type="secondary" onClick={() => onAuthorDelete(record)}>
                   <DeleteOutlined />
                 </Button>

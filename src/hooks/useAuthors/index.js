@@ -1,5 +1,5 @@
 // Core
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 // Actions
@@ -9,10 +9,14 @@ export const useAuthors = () => {
   const dispatch = useDispatch();
   const { authors } = useSelector((state) => state.authors);
   const { isFetching } = useSelector((state) => state.ui);
-  const authorsBasedOnKey = authors.map(({ id, ...records }) => ({
-    ...records,
-    key: id,
-  }));
+  const authorsBasedOnKey = useMemo(
+    () =>
+      authors.map(({ id, ...records }) => ({
+        ...records,
+        key: id,
+      })),
+    [authors]
+  );
 
   useEffect(() => {
     dispatch(authorsActions.getAuthorsAsync());

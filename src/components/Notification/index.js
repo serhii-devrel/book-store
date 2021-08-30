@@ -5,10 +5,10 @@ import { useEffect } from "react";
 import { notification } from "antd";
 
 // Hooks
-import { useNotificationData } from "../../hooks";
+import { useNotification } from "../../hooks";
 
 export const Notification = () => {
-  const { isPresent, type, message, description } = useNotificationData();
+  const { isPresent, type, message, description } = useNotification();
 
   useEffect(() => {
     if (!isPresent) return;

@@ -1,7 +1,7 @@
 // Core
 import { useSelector } from "react-redux";
 
-export const useNotificationData = () => {
+export const useNotification = () => {
   const notificationState = useSelector((state) => state.notification);
 
   const isPresent = notificationState.id;
