@@ -1,5 +1,5 @@
 // Core
-import { useEffect } from "react";
+import { useEffect, memo } from "react";
 
 // Style
 import { notification } from "antd";
@@ -7,7 +7,7 @@ import { notification } from "antd";
 // Hooks
 import { useNotification } from "../../hooks";
 
-export const Notification = () => {
+export const Notification = memo(() => {
   const { isPresent, type, message, description } = useNotification();
 
   useEffect(() => {
@@ -20,4 +20,4 @@ export const Notification = () => {
   }, [isPresent, type, message, description]);
 
   return null;
-};
+});

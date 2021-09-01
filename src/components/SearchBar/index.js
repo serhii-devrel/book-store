@@ -1,5 +1,5 @@
 // Core
-import React from "react";
+import React, { memo } from "react";
 
 // Style
 import { Wrapper } from "./Wrapper";
@@ -7,7 +7,7 @@ import { Input, Col } from "antd";
 
 const { Search } = Input;
 
-export const SearchBar = (props) => {
+export const SearchBar = memo((props) => {
   const { onSearch, value, onChange } = props;
 
   return (
@@ -25,4 +25,4 @@ export const SearchBar = (props) => {
       </Wrapper>
     </Col>
   );
-};
+});

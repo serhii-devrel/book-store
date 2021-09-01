@@ -1,6 +1,9 @@
 // Core
 import React, { memo } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
+// Hooks
+import { useNavigation } from "../../hooks";
 
 // Style
 import { Menu, Col, Avatar } from "antd";
@@ -11,11 +14,9 @@ import { BookOutlined } from "@ant-design/icons";
 // Routes
 import { routes } from "../../routes";
 
-const SideBar = () => {
-  const { pathname } = useLocation();
-  const path = `/${pathname
-    .split("/")
-    .reduce((a, b) => (a.length > b.length ? a : b), 0)}`;
+export const SideBar = memo(() => {
+  const { path } = useNavigation();
+
   return (
     <Col xs={24} lg={4}>
       <NavLink to={routes.authors}>
@@ -49,6 +50,4 @@ const SideBar = () => {
       </NavWrapper>
     </Col>
   );
-};
-
-export const SideBarMemo = memo(SideBar);
+});

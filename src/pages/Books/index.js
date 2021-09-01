@@ -2,7 +2,7 @@
 import React from "react";
 
 // Components
-import { Catcher, HeaderMemo, SideBarMemo, BooksList } from "../../components";
+import { Catcher, Header, SideBar, BooksList } from "../../components";
 
 // Style
 import { Row } from "antd";
@@ -11,8 +11,8 @@ export const Books = () => {
   return (
     <Catcher>
       <Row>
-        <HeaderMemo />
-        <SideBarMemo />
+        <Header />
+        <SideBar />
         <BooksList />
       </Row>
     </Catcher>

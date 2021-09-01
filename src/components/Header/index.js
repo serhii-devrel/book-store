@@ -6,7 +6,7 @@ import { Col } from "antd";
 import { Title } from "./Title";
 import { Wrapper } from "./Wrapper";
 
-const Header = () => {
+export const Header = memo(() => {
   return (
     <Col span={24}>
       <Wrapper>
@@ -14,6 +14,4 @@ const Header = () => {
       </Wrapper>
     </Col>
   );
-};
-
-export const HeaderMemo = memo(Header);
+});
