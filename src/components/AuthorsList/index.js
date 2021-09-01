@@ -29,14 +29,14 @@ export const AuthorsList = () => {
       <Wrapper>
         <SearchBar onSearch={onAuthorSearch} onChange={onSearchPatternChange} />
         <Controls>
-          <AuthorForm />
+          <AuthorForm isEditMode={false} />
         </Controls>
         <Table loading={isFetching} dataSource={authors} pagination={false}>
           <Column
             title="Date"
             dataIndex="createdAt"
             key="createdAt"
-            responsive={["md"]}
+            responsive={["lg"]}
           />
           <Column title="First Name" dataIndex="firstName" key="firstName" />
           <Column
@@ -62,7 +62,7 @@ export const AuthorsList = () => {
             key="action"
             render={(record) => (
               <Space size="middle">
-                <AuthorForm isEditMode />
+                <AuthorForm isEditMode={true} authorId={record.key} />
                 <Button type="secondary" onClick={() => onAuthorDelete(record)}>
                   <DeleteOutlined />
                 </Button>

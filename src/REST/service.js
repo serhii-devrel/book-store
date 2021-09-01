@@ -10,6 +10,13 @@ export const RESTService = {
         },
       });
     },
+    getAuthor(id) {
+      return RESTClient.get(`/authors/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
     searchAuthor(pattern) {
       return RESTClient.get(`/authors?search=${pattern}`, {
         headers: {
@@ -24,12 +31,18 @@ export const RESTService = {
         },
       });
     },
-    addAuthor(author) {
-      return RESTClient.post("/.../", {
+    editAuthor(id, author) {
+      return RESTClient.put(`/authors/${id}`, author, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...author }),
+      });
+    },
+    addAuthor(author) {
+      return RESTClient.post(`/authors/`, author, {
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
     },
   },

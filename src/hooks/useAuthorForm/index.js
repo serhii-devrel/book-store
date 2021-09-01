@@ -1,32 +1,31 @@
 // Core
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
+import moment from "moment";
+import { useSelector, useDispatch } from "react-redux";
 import { Form } from "antd";
 
-export const useAuthorForm = () => {
+// Actions
+import { authorsActions } from "../../bus/authors/actions";
+
+export const useAuthorForm = (isEditMode = false) => {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
+  const { author } = useSelector((state) => state.authors);
+  const { isFetching } = useSelector((state) => state.ui);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
   const [validator, setValidatorMessage] = useState({
     visible: false,
     message: "",
   });
   const dateFormat = "YYYY/MM/DD";
 
-  useEffect(() => {
-    if (isEditMode) {
-      console.log("Is edit mode");
-    }
-    setIsEditMode(false);
-  }, [isEditMode]);
-
-  const scheme = !isEditMode
-    ? {
-        firstName: "",
-        lastName: "",
-        dateOfBirth: "",
-        dateOfDeath: "",
-      }
-    : null;
+  const scheme = {
+    firstName: isEditMode ? author.firstName : "",
+    lastName: isEditMode ? author.lastName : "",
+    dateOfBirth: isEditMode ? moment(author.dateOfBirth) : "",
+    dateOfDeath:
+      isEditMode && author.dateOfDeath ? moment(author.dateOfDeath) : "",
+  };
 
   const rules = {
     firstName: [
@@ -49,45 +48,64 @@ export const useAuthorForm = () => {
     ],
   };
 
-  const showModal = useCallback((isEditMode = false) => {
-    if (isEditMode) {
-      setIsEditMode(true);
-    }
-    setIsModalVisible(true);
-  }, []);
+  const showModal = useCallback(
+    (id) => {
+      if (isEditMode) {
+        dispatch(authorsActions.getAuthorAsync(id));
+      }
+      setIsModalVisible(true);
+    },
+    [dispatch, isEditMode]
+  );
 
   const handleSubmit = useCallback(
     (values) => {
-      const { dateOfBirth, dateOfDeath } = values;
-
+      // Arrange
+      const { dateOfBirth, dateOfDeath, firstName, lastName } = values;
       const formattedDateOfBirth = dateOfBirth.format("L");
       const formattedDateOfDeath = dateOfDeath ? dateOfDeath.format("L") : "";
+      const formData = {
+        firstName,
+        lastName,
+        dateOfBirth: formattedDateOfBirth,
+        dateOfDeath: formattedDateOfDeath,
+      };
 
-      // Only birth date
+      // Only birth date contains
       if (formattedDateOfBirth && !formattedDateOfDeath) {
-        form.resetFields();
         setIsModalVisible(false);
         setValidatorMessage((state) => ({
           ...state.message,
           message: "",
           visible: false,
         }));
-        return console.log(values);
+
+        if (isEditMode) {
+          return dispatch(authorsActions.editAuthorAsync(author.id, formData));
+        } else {
+          return (
+            dispatch(authorsActions.addAuthorAsync(formData)) &&
+            form.resetFields()
+          );
+        }
       }
 
       // birth date >= death date
-      if (formattedDateOfBirth >= formattedDateOfDeath) {
+      if (moment(formattedDateOfBirth).isSameOrAfter(formattedDateOfDeath)) {
         return setValidatorMessage((state) => ({
           ...state.message,
           message:
-            "Date of birth cannot be greater or equal than date of death",
+            "Date of birth cannot be greater or equal than date of death!",
           visible: true,
         }));
       }
 
       // enjoying case
-      console.log(values);
-      form.resetFields();
+      if (isEditMode) {
+        dispatch(authorsActions.editAuthorAsync(author.id, formData));
+      } else {
+        dispatch(authorsActions.addAuthorAsync(formData)) && form.resetFields();
+      }
       setIsModalVisible(false);
       setValidatorMessage((state) => ({
         ...state.message,
@@ -95,7 +113,7 @@ export const useAuthorForm = () => {
         visible: false,
       }));
     },
-    [form]
+    [dispatch, isEditMode, author.id, form]
   );
 
   const handleCancel = useCallback(() => {
@@ -103,11 +121,12 @@ export const useAuthorForm = () => {
   }, []);
 
   return {
-    formRef: form,
-    isModalVisible,
     showModal,
     handleSubmit,
     handleCancel,
+    formRef: form,
+    isModalVisible,
+    isFetching,
     dateFormat,
     rules,
     scheme,

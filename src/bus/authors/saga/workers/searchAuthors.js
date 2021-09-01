@@ -21,6 +21,7 @@ export function* searchAuthors({ payload }) {
     if (status !== 200) {
       throw new Error(statusText);
     }
+
     yield put(authorsActions.setAuthors(authors));
   } catch (error) {
     yield put(uiActions.emitError(error, "searchAuthors worker"));

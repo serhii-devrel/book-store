@@ -5,10 +5,13 @@ import React from "react";
 import { useAuthorForm } from "../../hooks";
 
 // Style
-import { Modal, Button, Form, Input, DatePicker } from "antd";
+import { Controls } from "./Controls";
+import { Validator } from "./Validator";
+import { Modal, Button, Form, Input, DatePicker, Divider } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 
 export const AuthorForm = (props) => {
+  const { isEditMode, authorId } = props;
   const {
     showModal,
     handleCancel,
@@ -19,14 +22,15 @@ export const AuthorForm = (props) => {
     formRef,
     dateFormat,
     validator,
-  } = useAuthorForm();
-  const { isEditMode } = props;
+    isFetching,
+  } = useAuthorForm(isEditMode);
 
+  if (isFetching) return null;
   return (
     <>
       {isEditMode ? (
         <>
-          <Button type="secondary" onClick={() => showModal(isEditMode)}>
+          <Button type="secondary" onClick={() => showModal(authorId)}>
             <EditOutlined />
           </Button>
         </>
@@ -48,7 +52,9 @@ export const AuthorForm = (props) => {
           form={formRef}
           name="author form"
           onFinish={handleSubmit}
-          initialValues={scheme}
+          initialValues={{
+            ...scheme,
+          }}
         >
           <Form.Item
             name="firstName"
@@ -70,15 +76,22 @@ export const AuthorForm = (props) => {
           <Form.Item name="dateOfDeath" label="Date of death: ">
             <DatePicker format={dateFormat} />
           </Form.Item>
-          <p>{validator.visible && validator.message}</p>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              {isEditMode ? "Edit" : "Add"}
-            </Button>
-            <Button type="secondary" onClick={handleCancel}>
-              Cancel
-            </Button>
-          </Form.Item>
+          <Validator>
+            <p>{validator.visible && validator.message}</p>
+          </Validator>
+          <Divider />
+          <Controls>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                {isEditMode ? "Edit" : "Add"}
+              </Button>
+            </Form.Item>
+            <Form.Item>
+              <Button type="secondary" onClick={handleCancel}>
+                Cancel
+              </Button>
+            </Form.Item>
+          </Controls>
         </Form>
       </Modal>
     </>

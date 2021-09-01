@@ -8,23 +8,21 @@ import { uiActions } from "../../../ui/actions";
 // REST
 import { RESTService } from "../../../../REST/service";
 
-export function* deleteAuthor({ payload }) {
+export function* getAuthor({ payload }) {
   try {
     yield put(uiActions.startFetching());
-    const response = yield apply(
-      RESTService,
-      RESTService.authors.deleteAuthor,
-      [payload]
-    );
-    const { status, statusText } = response;
+    const response = yield apply(RESTService, RESTService.authors.getAuthor, [
+      payload,
+    ]);
+    const { status, statusText, data: author } = response;
 
     if (status !== 200) {
       throw new Error(statusText);
     }
 
-    yield put(authorsActions.getAuthorsAsync());
+    yield put(authorsActions.setAuthor(author));
   } catch (error) {
-    yield put(uiActions.emitError(error, "deleteAuthor worker"));
+    yield put(uiActions.emitError(error, "getAuthor worker"));
   } finally {
     yield put(uiActions.stopFetching());
   }

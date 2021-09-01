@@ -17,6 +17,7 @@ export function* getBooks() {
     if (status !== 200) {
       throw new Error(statusText);
     }
+
     yield put(booksActions.setBooks(books));
   } catch (error) {
     yield put(uiActions.emitError(error, "getBooks worker"));

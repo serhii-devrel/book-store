@@ -11,10 +11,10 @@ export const authorsActions = {
     };
   },
 
-  // TODO: refactor ???
-  clearAuthors: () => {
+  setAuthor: (author) => {
     return {
-      type: authorsTypes.CLEAR_AUTHORS,
+      type: authorsTypes.SET_AUTHOR,
+      payload: author,
     };
   },
 
@@ -22,6 +22,32 @@ export const authorsActions = {
   getAuthorsAsync: () => {
     return {
       type: authorsTypes.GET_AUTHORS_ASYNC,
+    };
+  },
+
+  getAuthorAsync: (id) => {
+    return {
+      type: authorsTypes.GET_AUTHOR_ASYNC,
+      payload: id,
+    };
+  },
+
+  addAuthorAsync: (author) => {
+    return {
+      type: authorsTypes.ADD_AUTHOR_ASYNC,
+      payload: {
+        author,
+      },
+    };
+  },
+
+  editAuthorAsync: (id, author) => {
+    return {
+      type: authorsTypes.EDIT_AUTHOR_ASYNC,
+      payload: {
+        id,
+        author,
+      },
     };
   },
 
